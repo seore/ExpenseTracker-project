@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="stylesheet" href="style.css">
+        <script src="app.js" defer></script>
+        <title>Expense Tracker</title>
+    </head>
+    <body>
+        <header>
+            <h1>Expense Tracker</h1>
+            <span class="badge">Local •Offline</span>
+        </header>
+
+        <main class="grid grid-3">
+            <!-- Left: Add Form + filters -->
+             <section class="card">
+                <h2>Add Expense</h2>
+                <form id="expense-form" autocomplete="off">
+                    <label>
+                        Title 
+                        <input id="title" placeholder="e.g, Groceries" required />
+                    </label>
+                    <div class="row">
+                        <label>
+                            Amount (£) 
+                            <input id="amount" type="number" step="0.01" min="0" placeholder="0.00" required />
+                        </label>
+                        <label>
+                            Category
+                            <input id="category" placeholder="e.g, Food" list="category-list"/>
+                            <datalist id="category-list"></datalist>
+                        </label>
+                    </div>
+                    <label>Date
+                        <input id="date" type="date" required/>
+                    </label>
+                    <div class="actions" style="margin-top: 8px;">
+                        <button class="btn-primary" type="submit">Add</button>
+                        <button type="button" id="reset-form">Reset</button>
+                    </div>
+                </form>
+
+                <h2 style="margin-top:18px">Filters</h2>
+                <div class="table-tools">
+                    <label style="min-width:160px;">Month
+                        <input id="filter-month" type="month"/>
+                    </label>
+                    <label style="min-width:160px;">Category
+                        <select id="filter-categoty">
+                            <option value="">All</option>
+                        </select>
+                    </label>
+                    <label style="flex:1;">Search
+                        <input id="filter-search" placeholder="Search title..."/>
+                    </label>
+                    <button id="clear-filters">Clear</button>
+                </div>
+
+                <h2 style="margin-top:18px">Data</h2>
+                <div class="actions">
+                    <button id="export-btn">Export JSON</button>
+                    <label class="category" for="import-file" style="cursor:pointer;">
+                        <span>Import JSON</span>
+                        <input id="import-file" type="file" accept="application/json" class="hidden"/>
+                    </label>
+                    <button class="btn-danger" id="wipe-btn" title="Delete All Data">Wipe All</button>
+                </div>
+                <p class="footer-note">Your data is stored locally in your browser (localStorage)</p>
+             </section>
+
+             <!-- Right: KPIs + table -->
+              <section class="card" style="grid-column: span 1;">
+                <h2>Overview</h2>
+                <div class="kpi">
+                    <div class="pill">
+                        <div class="label">This Month</div>
+                        <div class="value" id="kpi-month">£0.00</div>
+                    </div>
+                    <div class="pill">
+                        <div class="label">All Time</div>
+                        <div class="value" id="kpi-all">£0.00</div>
+                    </div>
+                    <div class="pill">
+                        <div class="label">Entries</div>
+                        <div class="value" id="kpi-count">0</div>
+                    </div>
+                </div>
+                <p class="footer-note">Tip: click table headers to sort.</p>
+              </section>
+
+              <section class="card" style="grid-column: span 1;">
+                <h2>Expenses</h2>
+                <table id="table">
+                    <thead>
+                        <tr>
+                            <th data-sort="date">Date ▲▼</th>
+                            <th data-sort="title">Title ▲▼</th>
+                            <th data-sort="category">Category ▲▼</th>
+                            <th class="right" data-sort="amount">Amount ▲▼</th>
+                            <th class="right">Actions </th>
+                        </tr>
+                    </thead>
+                    <tbody id="body"></tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="3" class="right muted">Page Total</td>
+                            <td class="right" id="page-total">£0.00</td>
+                            <td></td>
+                        </tr>
+                    </tfoot>
+                </table>
+              </section>
+        </main>
+    </body>
+</html>
