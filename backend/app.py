@@ -5,7 +5,7 @@ from datetime import date
 from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent.parent
-FRONTEND_DIR = BASE_DIR / "frontend"          # <-- your index.html folder
+FRONTEND_DIR = BASE_DIR / "frontend"          
 ASSETS_DIR = FRONTEND_DIR / "assets"
 
 # Serve only /assets statically (avoids catching /api/*)
