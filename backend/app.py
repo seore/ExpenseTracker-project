@@ -1,4 +1,4 @@
-# app.py — serve frontend/index.html and /api/* on the same origin (127.0.0.1:5500)
+import os
 from flask import Flask, request, jsonify, send_from_directory, abort
 from flask_sqlalchemy import SQLAlchemy
 from datetime import date
@@ -12,7 +12,11 @@ ASSETS_DIR = FRONTEND_DIR / "assets"
 app = Flask(__name__, static_folder=str(ASSETS_DIR), static_url_path="/assets")
 
 # --- DB config ---
-app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///expenses.db"
+db_url = os.environ.get("DATABASE_URL", "sqlite:///expenses.db")
+if db_url.startswith('postgres://'):
+    db_url = db_url.replace("postgres://", "postgresql://", 1)
+
+app.config["SQLALCHEMY_DATABASE_URI"] = db_url
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 db = SQLAlchemy(app)
 
@@ -104,7 +108,6 @@ def delete_expense(expense_id: int):
     db.session.commit()
     return ("", 204)
 
-# --- Entrypoint ---
 if __name__ == "__main__":
     # Stop any other server using 5500 first (e.g., Live Server)
     app.run(host="127.0.0.1", port=5500, debug=True)
